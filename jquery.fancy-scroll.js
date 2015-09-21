@@ -1,5 +1,5 @@
 /* ===========================================================
- * jquery-fancy-scroll.js v1
+ * jquery-fancy-scroll.js v1.1
  * ===========================================================
  * Copyright 2013 Pete Rojwongsuriya.
  * http://www.thepetedesign.com
@@ -16,7 +16,7 @@
   var defaults = {
 		animation: "bounce",
     direction: "vertical",
-		bounceDistance: 50,
+		distance: 50,
 		glowColor: "#02A1FA",
 		animDuration: "0.2s",
 		animEasing: "cubic-bezier(0.175, 0.885, 0.420, 1.310)",
@@ -32,7 +32,7 @@
     if (settings.innerWrapper != document) var el = container.find($(settings.innerWrapper));
     
     
-    $.fn.bounceEffect = function(px, s, anim, settings) {
+    $.fn.bounceEffect = function(d, s, anim, settings) {
       if (settings.innerWrapper == document) {
         var selector = $(this).find("body")
       } else {
@@ -41,44 +41,64 @@
       
       if (settings.direction == "horizontal") {
         selector.css({
-          "-webkit-transform": "translate3d(" + px + ", 0, 0)", 
+          "-webkit-transform": "translate3d(" + d + "px, 0, 0)", 
           "-webkit-transition": "all " + s + " " + anim,
-          "-moz-transform": "translate3d(" + px + ", 0, 0)", 
+          "-moz-transform": "translate3d(" + d + "px, 0, 0)", 
           "-moz-transition": "all " + s + " " + anim,
-          "-ms-transform": "translate3d(" + px + ", 0, 0)", 
+          "-ms-transform": "translate3d(" + d + "px, 0, 0)", 
           "-ms-transition": "all " + s + " " + anim,
-          "transform": "translate3d(" + px + ", 0, 0)", 
+          "transform": "translate3d(" + d + "px, 0, 0)", 
           "transition": "all " + s + " " + anim
         })
       } else {
         selector.css({
-          "-webkit-transform": "translate3d(0, " + px + ", 0)", 
+          "-webkit-transform": "translate3d(0, " + d + "px, 0)", 
           "-webkit-transition": "all " + s + " " + anim,
-          "-moz-transform": "translate3d(0, " + px + ", 0)", 
+          "-moz-transform": "translate3d(0, " + d + "px, 0)", 
           "-moz-transition": "all " + s + " " + anim,
-          "-ms-transform": "translate3d(0, " + px + ", 0)", 
+          "-ms-transform": "translate3d(0, " + d + "px, 0)", 
           "-ms-transition": "all " + s + " " + anim,
-          "transform": "translate3d(0, " + px + ", 0)", 
+          "transform": "translate3d(0, " + d + "px, 0)", 
           "transition": "all " + s + " " + anim
         })
       }
     }
 
 
-    $.fn.glowEffect = function(shadow, s, anim, settings) {
+    $.fn.glowEffect = function(d, s, anim, settings) {
       if (settings.innerWrapper == document) {
         var selector = $(this).find("body")
       } else {
         var selector = $(this)
       }
-      
-      selector.css({
-        "box-shadow": shadow, 
-        "-webkit-transition": "all " + s + " " + anim,
-        "-moz-transition": "all " + s + " " + anim,
-        "-ms-transition": "all " + s + " " + anim,
-        "transition": "all " + s + " " + anim,
-      })
+
+      if (d) {
+        if (settings.direction == "horizontal") {
+          selector.css({
+            "box-shadow": settings.glowColor + " " + d + "px 0 50px -30px inset", 
+            "-webkit-transition": "all " + s + " " + anim,
+            "-moz-transition": "all " + s + " " + anim,
+            "-ms-transition": "all " + s + " " + anim,
+            "transition": "all " + s + " " + anim,
+          })
+        } else {
+          selector.css({
+            "box-shadow": settings.glowColor + " 0 " + d + "px 50px -30px inset", 
+            "-webkit-transition": "all " + s + " " + anim,
+            "-moz-transition": "all " + s + " " + anim,
+            "-ms-transition": "all " + s + " " + anim,
+            "transition": "all " + s + " " + anim,
+          })
+        }
+      } else {
+        selector.css({
+          "box-shadow": "none", 
+          "-webkit-transition": "all " + s + " " + anim,
+          "-moz-transition": "all " + s + " " + anim,
+          "-ms-transition": "all " + s + " " + anim,
+          "transition": "all " + s + " " + anim,
+        })
+      }
     }
     
     
@@ -100,7 +120,7 @@
           status = "on"
           switch (settings.animation) {
             case "bounce":
-              el.bounceEffect(settings.bounceDistance * -1 + "px", settings.animDuration, settings.animEasing, settings);
+              el.bounceEffect(settings.distance * -1, settings.animDuration, settings.animEasing, settings);
               el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                 el.bounceEffect("0", settings.animDuration, settings.animEasing, settings);
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -110,14 +130,9 @@
               break;
 
             case "glow":
-              if (settings.direction == "horizontal") {
-                el.glowEffect(settings.glowColor + " -30px 0 50px -30px inset", settings.animDuration, settings.animEasing, settings);
-              } else {
-                el.glowEffect(settings.glowColor + " 0 -30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
-              }
-
+              el.glowEffect(settings.distance * -1, settings.animDuration, settings.animEasing, settings);
               el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-                el.glowEffect("none", settings.animDuration, settings.animEasing, settings);
+                el.glowEffect(null, settings.animDuration, settings.animEasing, settings);
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                   status = "off"
                 });
@@ -131,7 +146,7 @@
             status = "on"
             switch (settings.animation) {
               case "bounce":
-                el.bounceEffect(settings.bounceDistance + "px", settings.animDuration, settings.animEasing, settings);
+                el.bounceEffect(settings.distance, settings.animDuration, settings.animEasing, settings);
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                   el.bounceEffect("0", settings.animDuration, settings.animEasing, settings);
                   el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -141,14 +156,9 @@
                 break;
 
               case "glow":
-                if (settings.direction == "horizontal") {
-                  el.glowEffect(settings.glowColor + " 30px 0 50px -30px inset", settings.animDuration, settings.animEasing, settings);
-                } else {
-                  el.glowEffect(settings.glowColor + " 0 30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
-                }
-            
+                el.glowEffect(settings.distance, settings.animDuration, settings.animEasing, settings);
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-                  el.glowEffect("none", settings.animDuration, settings.animEasing, settings);
+                  el.glowEffect(null, settings.animDuration, settings.animEasing, settings);
                   el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                     status = "off"
                   });

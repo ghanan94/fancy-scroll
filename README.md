@@ -1,6 +1,7 @@
-#Fancy Scroll by Pete R.
+#Fancy Scroll by Pete R, Updated by Ghanan G
 Add an Overflow Scroll Effect like on iOS/Android but for your website
 Created by [Pete R.](http://www.thepetedesign.com), Founder of [BucketListly](http://www.bucketlistly.com)
+Updated by [Ghanan G.](http://ghanan.ca)
 
 [![Notify Better](http://www.thepetedesign.com/images/fancy_scroll_image2.png "Fancy Scroll")](http://www.thepetedesign.com/demos/fancy_scroll_demo.html)
 
@@ -26,7 +27,7 @@ With Fancy Scroll, you can define animation's duration, colours (for glow effect
 ````javascript
 $(window).fancy_scroll({
   animation: "bounce", // Options available are bounce (like on iOS), or glow (like on Android 4.0+)
- 	bounceDistance: 50, // ONLY for bounce effect: The distance in pixels that page will overflow. Default is 50 pixels.
+ 	distance: 50, // The distance in pixels that page will overflow (bounce) or show a glow (glow). Default is 50 pixels.
  	glowColor: "#02A1FA", // ONLY for glow effect: The colour of the glow effect. Default is #02A1FA (blueish).
  	animDuration: "0.3s", // The animation duration. Can take milliseconds (200ms) or seconds value (0.2s). Default is 0.2s
  	animEasing: "cubic-bezier(0.175, 0.885, 0.420, 1.310)", // This field accept css easing options. Options available are: linear, ease-in, ease-out, ease-in-out or you can generate it with the tool available here: http://matthewlein.com/ceaser/
@@ -60,6 +61,14 @@ $(".container").fancy_scroll({
  });
 ````
 Now, your container div will finally have a bounce overflow effect just like your websites. This can be apply to as many divs and/or body as you like. Pretty neat huh? I hope you will find this plugin useful.
+
+## Horizontal Scrolling
+By default, the effects work with vertical scrolling. To enable the same effects, but when scrolling horizontally, specify the direction as follows:
+````javascript
+$(".container").fancy_scroll({
+  direction: "horizontal" // Let you define the scrolling direction which you want to apply the effect for.
+ });
+````
 
 ## Other Resources
 - Tutorial (Coming Soon)
