@@ -22,7 +22,7 @@
 		innerWrapper: document
 	};
 
-  $.fn.fancy_scroll = function(options){
+  $.fn.fancy_scroll = function(options) {
     var settings = $.extend({}, defaults, options),
         el = $(settings.innerWrapper),
         container = $(this),
@@ -32,7 +32,6 @@
     
     
     $.fn.bounceEffect = function(px, s, anim, settings) {
-      
       if (settings.innerWrapper == document) {
         var selector = $(this).find("body")
       } else {
@@ -50,6 +49,8 @@
         "transition": "all " + s + " " + anim
       })
     }
+
+
     $.fn.glowEffect = function(shadow, s, anim, settings) {
       if (settings.innerWrapper == document) {
         var selector = $(this).find("body")
@@ -67,11 +68,10 @@
     }
     
     
-    
-    container.scroll(function(event){
+    container.scroll(function(event) {
       var pos = container.scrollTop(); 
-      if(pos > posWas){ //if the user is scrolling down...
-        if((container.scrollTop() + container.height() >= el.height()) && status == "off") {
+      if (pos > posWas) { //if the user is scrolling down...
+        if ((container.scrollTop() + container.height() >= el.height()) && status == "off") {
           status = "on"
           switch (settings.animation) {
             case "bounce":
@@ -82,7 +82,8 @@
                   status = "off"
                 });
               });
-            break;
+              break;
+
             case "glow":
               el.glowEffect(settings.glowColor + " 0 -30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
               el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -91,14 +92,12 @@
                   status = "off"
                 });
               });
-            break;
+              break;
           }
-          
         }
-      }
-      if(pos < posWas){ //if the user is scrolling up...
-        if((container.scrollTop() + container.height() != el.height()) && status == "off") {
-          if(container.scrollTop() <= 0) {
+      } else if (pos < posWas) { //if the user is scrolling up...
+        if ((container.scrollTop() + container.height() != el.height()) && status == "off") {
+          if (container.scrollTop() <= 0) {
             status = "on"
             switch (settings.animation) {
               case "bounce":
@@ -109,7 +108,8 @@
                     status = "off"
                   });
                 });
-              break;
+                break;
+
               case "glow":
                 el.glowEffect(settings.glowColor + " 0 30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -118,19 +118,15 @@
                     status = "off"
                   });
                 });
-              break;
+                break;
             }
-            
-            
           }
         }
-      }
+      } 
+
       posWas = pos; 
-      
     });
-    
   }
-  
 }(window.jQuery);
 
 
