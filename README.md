@@ -66,7 +66,7 @@ Now, your container div will finally have a bounce overflow effect just like you
 By default, the effects work with vertical scrolling. To enable the same effects, but when scrolling horizontally, specify the direction as follows:
 ````javascript
 $(".container").fancy_scroll({
-  direction: "horizontal" // Let you define the scrolling direction which you want to apply the effect for.
+  horizontal: true // Let you define the scrolling direction to be horizontal.
  });
 ````
 

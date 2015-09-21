@@ -15,7 +15,7 @@
   
   var defaults = {
 		animation: "bounce",
-    direction: "vertical",
+    horizontal: false,
 		distance: 50,
 		glowColor: "#02A1FA",
 		animDuration: "0.2s",
@@ -31,7 +31,7 @@
         status = "off";
     if (settings.innerWrapper != document) var el = container.find($(settings.innerWrapper));
     
-    
+
     $.fn.bounceEffect = function(d, s, anim, settings) {
       if (settings.innerWrapper == document) {
         var selector = $(this).find("body")
@@ -39,7 +39,7 @@
         var selector = $(this)
       }
       
-      if (settings.direction == "horizontal") {
+      if (settings.horizontal) {
         selector.css({
           "-webkit-transform": "translate3d(" + d + "px, 0, 0)", 
           "-webkit-transition": "all " + s + " " + anim,
@@ -64,7 +64,6 @@
       }
     }
 
-
     $.fn.glowEffect = function(d, s, anim, settings) {
       if (settings.innerWrapper == document) {
         var selector = $(this).find("body")
@@ -73,7 +72,7 @@
       }
 
       if (d) {
-        if (settings.direction == "horizontal") {
+        if (settings.horizontal) {
           selector.css({
             "box-shadow": settings.glowColor + " " + d + "px 0 50px -30px inset", 
             "-webkit-transition": "all " + s + " " + anim,
@@ -105,7 +104,7 @@
     container.scroll(function(event) {
       var pos, container_hw, el_hw; 
 
-      if (settings.direction == "horizontal") {
+      if (settings.horizontal) {
         pos = container.scrollLeft();
         container_hw = container.width();
         el_hw = el.width();
