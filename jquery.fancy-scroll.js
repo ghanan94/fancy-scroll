@@ -15,6 +15,7 @@
   
   var defaults = {
 		animation: "bounce",
+    direction: "vertical",
 		bounceDistance: 50,
 		glowColor: "#02A1FA",
 		animDuration: "0.2s",
@@ -38,16 +39,29 @@
         var selector = $(this)
       }
       
-      selector.css({
-        "-webkit-transform": "translate3d(0, " + px + ", 0)", 
-        "-webkit-transition": "all " + s + " " + anim,
-        "-moz-transform": "translate3d(0, " + px + ", 0)", 
-        "-moz-transition": "all " + s + " " + anim,
-        "-ms-transform": "translate3d(0, " + px + ", 0)", 
-        "-ms-transition": "all " + s + " " + anim,
-        "transform": "translate3d(0, " + px + ", 0)", 
-        "transition": "all " + s + " " + anim
-      })
+      if (settings.direction == "horizontal") {
+        selector.css({
+          "-webkit-transform": "translate3d(" + px + ", 0, 0)", 
+          "-webkit-transition": "all " + s + " " + anim,
+          "-moz-transform": "translate3d(" + px + ", 0, 0)", 
+          "-moz-transition": "all " + s + " " + anim,
+          "-ms-transform": "translate3d(" + px + ", 0, 0)", 
+          "-ms-transition": "all " + s + " " + anim,
+          "transform": "translate3d(" + px + ", 0, 0)", 
+          "transition": "all " + s + " " + anim
+        })
+      } else {
+        selector.css({
+          "-webkit-transform": "translate3d(0, " + px + ", 0)", 
+          "-webkit-transition": "all " + s + " " + anim,
+          "-moz-transform": "translate3d(0, " + px + ", 0)", 
+          "-moz-transition": "all " + s + " " + anim,
+          "-ms-transform": "translate3d(0, " + px + ", 0)", 
+          "-ms-transition": "all " + s + " " + anim,
+          "transform": "translate3d(0, " + px + ", 0)", 
+          "transition": "all " + s + " " + anim
+        })
+      }
     }
 
 
@@ -69,9 +83,20 @@
     
     
     container.scroll(function(event) {
-      var pos = container.scrollTop(); 
-      if (pos > posWas) { //if the user is scrolling down...
-        if ((container.scrollTop() + container.height() >= el.height()) && status == "off") {
+      var pos, container_hw, el_hw; 
+
+      if (settings.direction == "horizontal") {
+        pos = container.scrollLeft();
+        container_hw = container.width();
+        el_hw = el.width();
+      } else {
+        pos = container.scrollTop();
+        container_hw = container.height();
+        el_hw = el.height();
+      }
+
+      if (pos > posWas) { // if the user is scrolling down/left...
+        if ((pos + container_hw >= el_hw) && status == "off") {
           status = "on"
           switch (settings.animation) {
             case "bounce":
@@ -85,7 +110,12 @@
               break;
 
             case "glow":
-              el.glowEffect(settings.glowColor + " 0 -30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
+              if (settings.direction == "horizontal") {
+                el.glowEffect(settings.glowColor + " -30px 0 50px -30px inset", settings.animDuration, settings.animEasing, settings);
+              } else {
+                el.glowEffect(settings.glowColor + " 0 -30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
+              }
+
               el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                 el.glowEffect("none", settings.animDuration, settings.animEasing, settings);
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
@@ -95,15 +125,15 @@
               break;
           }
         }
-      } else if (pos < posWas) { //if the user is scrolling up...
-        if ((container.scrollTop() + container.height() != el.height()) && status == "off") {
-          if (container.scrollTop() <= 0) {
+      } else if (pos < posWas) { // if the user is scrolling up/right...
+        if ((pos + container_hw != el_hw) && status == "off") {
+          if (pos <= 0) {
             status = "on"
             switch (settings.animation) {
               case "bounce":
                 el.bounceEffect(settings.bounceDistance + "px", settings.animDuration, settings.animEasing, settings);
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
-                  el.bounceEffect("0px", settings.animDuration, settings.animEasing, settings);
+                  el.bounceEffect("0", settings.animDuration, settings.animEasing, settings);
                   el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                     status = "off"
                   });
@@ -111,7 +141,12 @@
                 break;
 
               case "glow":
-                el.glowEffect(settings.glowColor + " 0 30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
+                if (settings.direction == "horizontal") {
+                  el.glowEffect(settings.glowColor + " 30px 0 50px -30px inset", settings.animDuration, settings.animEasing, settings);
+                } else {
+                  el.glowEffect(settings.glowColor + " 0 30px 50px -30px inset", settings.animDuration, settings.animEasing, settings);
+                }
+            
                 el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
                   el.glowEffect("none", settings.animDuration, settings.animEasing, settings);
                   el.one('webkitTransitionEnd otransitionend oTransitionEnd msTransitionEnd transitionend', function(e) {
