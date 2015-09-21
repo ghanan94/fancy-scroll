@@ -25,7 +25,7 @@
 
   $.fn.fancy_scroll = function(options) {
     var settings = $.extend({}, defaults, options),
-        el = $(settings.innerWrapper),
+        el = $(this).find(settings.innerWrapper),
         container = $(this),
         posWas = 0,
         status = "off";
