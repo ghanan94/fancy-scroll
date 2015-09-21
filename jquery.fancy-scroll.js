@@ -64,6 +64,7 @@
       }
     }
 
+
     $.fn.glowEffect = function(d, s, anim, settings) {
       if (settings.innerWrapper == document) {
         var selector = $(this).find("body")
@@ -115,8 +116,19 @@
       }
 
       if (pos > posWas) { // if the user is scrolling down/left...
-        if ((pos + container_hw >= el_hw) && status == "off") {
+        if ((pos + container_hw >= el_hw - 1) && status == "off") {
           status = "on"
+
+          // Since scroll left is checking within +1 px, 
+          // set the scroll to max ammount if not already to prevent double effects
+          if (pos + container_hw < el_hw) {
+            if (settings.horizontal) {
+              container.scrollLeft(el_hw);
+            } else {
+              container.scrollTop(el_hw);
+            }
+          }
+
           switch (settings.animation) {
             case "bounce":
               el.bounceEffect(settings.distance * -1, settings.animDuration, settings.animEasing, settings);
@@ -143,6 +155,7 @@
         if ((pos + container_hw != el_hw) && status == "off") {
           if (pos <= 0) {
             status = "on"
+
             switch (settings.animation) {
               case "bounce":
                 el.bounceEffect(settings.distance, settings.animDuration, settings.animEasing, settings);
@@ -172,5 +185,3 @@
     });
   }
 }(window.jQuery);
-
-
